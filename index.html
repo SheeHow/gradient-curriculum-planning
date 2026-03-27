@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gradient-Based Data Valuation for Game-Theoretic Motion Planning</title>
+  <style>
+    :root {
+      --primary: #1a365d;
+      --accent: #2b6cb0;
+      --bg: #f7fafc;
+      --card: #ffffff;
+      --text: #2d3748;
+      --muted: #718096;
+      --border: #e2e8f0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.7;
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+
+    /* Header */
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 48px 0 40px;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 16px;
+    }
+    header .venue {
+      font-size: 1rem;
+      color: #bee3f8;
+      margin-bottom: 20px;
+    }
+    header .authors {
+      font-size: 0.95rem;
+      color: #e2e8f0;
+      font-style: italic;
+    }
+
+    /* Links bar */
+    .links {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      padding: 20px 0;
+      background: white;
+      border-bottom: 1px solid var(--border);
+    }
+    .links a {
+      display: inline-block;
+      padding: 8px 20px;
+      border: 2px solid var(--accent);
+      border-radius: 6px;
+      color: var(--accent);
+      text-decoration: none;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .links a:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    /* Sections */
+    section {
+      padding: 40px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    section:last-child { border-bottom: none; }
+    section h2 {
+      font-size: 1.4rem;
+      color: var(--primary);
+      margin-bottom: 16px;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+    section p { margin-bottom: 12px; }
+
+    /* Key result highlight */
+    .highlight {
+      background: #ebf8ff;
+      border-left: 4px solid var(--accent);
+      padding: 16px 20px;
+      margin: 20px 0;
+      border-radius: 0 6px 6px 0;
+    }
+    .highlight strong { color: var(--primary); }
+
+    /* Figures */
+    .figure {
+      margin: 24px 0;
+      text-align: center;
+    }
+    .figure img {
+      max-width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    .figure .caption {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    /* Results table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    th, td {
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+    }
+    tr:hover { background: #f0f4f8; }
+    tr.best { background: #ebf8ff; font-weight: 600; }
+
+    /* BibTeX */
+    .bibtex {
+      background: #1a202c;
+      color: #e2e8f0;
+      padding: 16px 20px;
+      border-radius: 6px;
+      font-family: 'Menlo', 'Consolas', monospace;
+      font-size: 0.8rem;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    /* Video/GIF container */
+    .video-container {
+      margin: 24px 0;
+      text-align: center;
+    }
+    .video-container img {
+      max-width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    .video-container .caption {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    /* Two-column figure layout */
+    .figure-row {
+      display: flex;
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .figure-row .figure {
+      flex: 1;
+      margin: 0;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 30px 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    /* Section divider for "deep dive" sections */
+    .deep-dive-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .deep-dive-header h2 {
+      margin-bottom: 0;
+    }
+    .deep-dive-badge {
+      display: inline-block;
+      background: #ebf8ff;
+      color: var(--accent);
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.3rem; }
+      .links { flex-wrap: wrap; }
+      .figure-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1>Gradient-Based Data Valuation Improves Curriculum Learning<br>for Game-Theoretic Motion Planning</h1>
+    <div class="venue">ICRA 2027 (Under Review)</div>
+    <div class="authors">Anonymous Authors</div>
+  </div>
+</header>
+
+<div class="links">
+  <a href="#">Paper (PDF)</a>
+  <a href="#">Code (GitHub)</a>
+  <a href="#">arXiv</a>
+</div>
+
+<div class="container">
+
+  <!-- Abstract -->
+  <section>
+    <h2>Abstract</h2>
+    <p>
+      We demonstrate that gradient-based data valuation produces curriculum orderings that
+      significantly outperform metadata-based heuristics for training game-theoretic motion planners.
+      We apply TracIn gradient-similarity scoring to GameFormer on the nuPlan benchmark and
+      construct a curriculum that weights training scenarios by their estimated contribution to
+      validation loss reduction.
+    </p>
+    <div class="highlight">
+      <strong>Key Result:</strong> The TracIn-weighted curriculum achieves a mean planning ADE of
+      1.704 &plusmn; 0.029 m, significantly outperforming the metadata-based curriculum
+      (1.822 &plusmn; 0.014 m; paired <em>t</em>-test <em>p</em> = 0.021, Cohen's <em>d<sub>z</sub></em> = 3.88).
+      TracIn scores and scenario metadata are nearly orthogonal (Spearman &rho; = &minus;0.014),
+      revealing that gradient-based valuation captures training dynamics invisible to hand-crafted features.
+    </div>
+  </section>
+
+  <!-- Method Overview (Cover Figure) -->
+  <section>
+    <h2>Method Overview</h2>
+    <div class="figure">
+      <img src="assets/fig_overview.png" alt="Method overview: Scenario Scoring, Curriculum Schedule, GameFormer Training">
+      <div class="caption">
+        <strong>Phase 1:</strong> Three scoring methods assign per-sample importance.
+        <strong>Phase 2:</strong> A three-phase curriculum converts scores to training weights;
+        weighted training preserves coverage while hard selection fails.
+        <strong>Phase 3:</strong> GameFormer trained with gradient-based curriculum achieves lower
+        ADE (<em>p</em>=0.021) and reduced variance.
+      </div>
+    </div>
+  </section>
+
+  <!-- Demo Visualization -->
+  <section>
+    <h2>Scenario Visualization</h2>
+    <p>
+      The figure below shows representative driving scenarios from four quadrants of the
+      TracIn &times; Metadata scoring space, illustrating the orthogonality between the two
+      scoring methods (Spearman &rho; = &minus;0.014). High-metadata scenarios feature dense
+      multi-agent interactions, while high-TracIn scenarios need not appear visually complex
+      &mdash; gradient-based valuation captures training dynamics invisible to hand-crafted features.
+    </p>
+
+    <div class="figure">
+      <img src="assets/fig_scenario_demo.png" alt="Scenario demo: TracIn vs Metadata quadrants">
+      <div class="caption">
+        Four quadrants of the TracIn &times; Metadata scoring space. Ego past trajectory (blue),
+        ego future (red), neighbor past (gray), neighbor future (orange dashed).
+      </div>
+    </div>
+
+    <p>
+      Animated trajectory rollouts showing temporal progression of ego and surrounding agents:
+    </p>
+
+    <div class="video-container">
+      <img src="assets/demo_quadrant.gif" alt="Animated quadrant comparison">
+      <div class="caption">
+        Animated 2&times;2 comparison: each panel shows a scenario from one
+        TracIn &times; Metadata quadrant with observation &rarr; future rollout.
+      </div>
+    </div>
+  </section>
+
+  <!-- Dataset Explorer (website-exclusive) -->
+  <section>
+    <div class="deep-dive-header">
+      <h2>Dataset Explorer</h2>
+      <span class="deep-dive-badge">Website Exclusive</span>
+    </div>
+    <p>
+      Our experiments use 5,148 training scenarios from the nuPlan benchmark,
+      spanning four geographic locations with diverse driving conditions.
+      Each scenario is characterized by six interaction-difficulty metrics.
+    </p>
+
+    <div class="figure">
+      <img src="assets/demo_geographic.png" alt="Geographic dataset composition">
+      <div class="caption">
+        Left: Dataset composition by geographic location. Las Vegas dominates with 85.8% of
+        scenarios. Right: Average difficulty metrics vary substantially across cities &mdash;
+        Singapore scenarios have the most conflicts (29.6 avg) despite having the fewest scenarios.
+      </div>
+    </div>
+
+    <div class="figure">
+      <img src="assets/demo_difficulty_radar.png" alt="Scenario difficulty radar by tier">
+      <div class="caption">
+        Radar chart of six difficulty metrics across four scenario tiers. Tier 4 (hard) scenarios
+        consistently score highest on conflict count, proximity time, and minimum distance,
+        while Tier 2 scenarios are characterized by high active agent counts and heading differences.
+      </div>
+    </div>
+  </section>
+
+  <!-- Method Overview -->
+  <section>
+    <h2>Method</h2>
+    <p>
+      We compare three scenario scoring methods for curriculum learning on GameFormer:
+    </p>
+    <p>
+      <strong>1. Metadata scoring</strong> &mdash; six interaction-difficulty features
+      (min TTC, conflict count, proximity duration, heading difference, active agents, min distance)
+      averaged into a composite score.
+    </p>
+    <p>
+      <strong>2. TracIn scoring</strong> &mdash; gradient dot-product between each training sample
+      and the mean validation gradient, measuring direct contribution to validation loss reduction.
+      Computed in 46 minutes on a single GPU.
+    </p>
+    <p>
+      <strong>3. Hybrid scoring</strong> &mdash; rank-average of TracIn and metadata percentile ranks.
+    </p>
+    <p>
+      All scores feed into a three-phase curriculum: warm-up (uniform, epochs 1&ndash;3),
+      ramp-up (progressive weighting, epochs 4&ndash;8), and focus (full differentiation, epochs 9&ndash;20).
+    </p>
+
+    <div class="figure-row">
+      <div class="figure">
+        <img src="assets/fig_score_distribution.png" alt="TracIn score distribution">
+        <div class="caption">
+          TracIn score distribution across 5,148 training scenarios. 64.2% have negative scores
+          (gradient-opposing); quartile tiers determine curriculum weights.
+        </div>
+      </div>
+      <div class="figure">
+        <img src="assets/fig_curriculum_schedule.png" alt="Curriculum weight schedule">
+        <div class="caption">
+          Three-phase curriculum schedule. Weights ramp from uniform to fully differentiated
+          over epochs 1&ndash;20, based on TracIn score quintile.
+        </div>
+      </div>
+    </div>
+
+    <div class="figure">
+      <img src="assets/fig3_score_correlations.png" alt="Score correlation analysis">
+      <div class="caption">
+        TracIn and metadata scores are nearly orthogonal (&rho; = &minus;0.014),
+        confirming they capture fundamentally different aspects of data utility.
+      </div>
+    </div>
+  </section>
+
+  <!-- Data Valuation Deep Dive (website-exclusive) -->
+  <section>
+    <div class="deep-dive-header">
+      <h2>Data Valuation Deep Dive</h2>
+      <span class="deep-dive-badge">Website Exclusive</span>
+    </div>
+    <p>
+      We computed five different data valuation scores for all 5,148 training scenarios:
+      TracIn (gradient similarity), Influence Functions (iHVP), training loss,
+      a hybrid rank-average, and metadata-based composite scoring. The relationships
+      between these methods reveal why gradient-based valuation works.
+    </p>
+
+    <div class="figure">
+      <img src="assets/demo_score_landscape.png" alt="TracIn vs Metadata score landscape">
+      <div class="caption">
+        Data valuation landscape: each dot is one of 5,148 training scenarios plotted by
+        TracIn score (x-axis) vs. metadata composite score (y-axis), colored by difficulty tier.
+        Marginal distributions shown on top and right. The near-zero Spearman correlation
+        (&rho; = &minus;0.014) confirms the two scoring methods capture orthogonal information.
+        52% of scenarios have negative (gradient-opposing) TracIn scores.
+      </div>
+    </div>
+
+    <div class="figure">
+      <img src="assets/demo_score_heatmap.png" alt="Scoring method correlation heatmap and bump chart">
+      <div class="caption">
+        Left: Spearman rank correlations between all five scoring methods. TracIn and Influence
+        Functions are nearly uncorrelated (&rho; = &minus;0.03), confirming that iHVP produces
+        noise at this model scale. Hybrid inherits strong correlation with both TracIn (0.70)
+        and Metadata (0.69) by construction.
+        Right: How the top-10 TracIn scenarios are ranked by other methods &mdash; the dramatic
+        rank shuffling illustrates that each method values different scenarios.
+      </div>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section>
+    <h2>Results</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Plan ADE (m) &darr;</th>
+          <th>Plan FDE (m) &darr;</th>
+          <th>Plan AHE (rad) &darr;</th>
+          <th>CV</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Baseline (uniform)</td>
+          <td>1.772 &plusmn; 0.134</td>
+          <td>3.837 &plusmn; 0.218</td>
+          <td>0.146 &plusmn; 0.021</td>
+          <td>7.6%</td>
+        </tr>
+        <tr>
+          <td>Metadata curriculum</td>
+          <td>1.822 &plusmn; 0.014</td>
+          <td>3.996 &plusmn; 0.216</td>
+          <td>0.142 &plusmn; 0.010</td>
+          <td>0.7%</td>
+        </tr>
+        <tr class="best">
+          <td><strong>TracIn curriculum</strong></td>
+          <td><strong>1.704 &plusmn; 0.029</strong></td>
+          <td><strong>3.731 &plusmn; 0.394</strong></td>
+          <td><strong>0.133 &plusmn; 0.019</strong></td>
+          <td><strong>1.7%</strong></td>
+        </tr>
+        <tr>
+          <td>Loss SPL</td>
+          <td>2.003 &plusmn; 0.391</td>
+          <td>3.678 &plusmn; 0.200</td>
+          <td>0.180 &plusmn; 0.041</td>
+          <td>19.5%</td>
+        </tr>
+        <tr>
+          <td>Hybrid curriculum</td>
+          <td>1.766 &plusmn; 0.069</td>
+          <td>3.999 &plusmn; 0.185</td>
+          <td>0.134 &plusmn; 0.016</td>
+          <td>3.9%</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="figure">
+      <img src="assets/fig1_multiseed_valADE.png" alt="Multi-seed planning ADE comparison">
+      <div class="caption">
+        Multi-seed planning ADE comparison (n=3 seeds). Horizontal bars: mean; whiskers: &plusmn;1 s.d.;
+        shaped markers: individual seeds. Y-axis broken to show the Loss SPL outlier (seed 2024, ADE=2.555).
+        *p=0.021 (paired t-test, TracIn vs. Metadata).
+      </div>
+    </div>
+
+    <div class="figure-row">
+      <div class="figure">
+        <img src="assets/fig2_training_curves.png" alt="Training curves">
+        <div class="caption">
+          Validation ADE over training epochs. The TracIn curriculum converges to the
+          lowest ADE by epoch 15.
+        </div>
+      </div>
+      <div class="figure">
+        <img src="assets/fig5_multimetric.png" alt="Multi-metric comparison">
+        <div class="caption">
+          Dot-and-whisker comparison across five methods and three planning metrics.
+          Diamonds: mean; shaped markers: individual seeds (n=3).
+          Methods sorted by mean ADE. The Loss SPL outlier (seed 2024, ADE=2.55) is clearly visible.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Training Dynamics (website-exclusive) -->
+  <section>
+    <div class="deep-dive-header">
+      <h2>Training Dynamics</h2>
+      <span class="deep-dive-badge">Website Exclusive</span>
+    </div>
+    <p>
+      We trained 28 experiment configurations across the full design space:
+      data selection (10%&ndash;100%), curriculum strategies (TracIn, metadata, hybrid,
+      loss-based, uniform), and augmentation. The animations below reveal how different
+      training strategies affect convergence behavior.
+    </p>
+
+    <div class="video-container">
+      <img src="assets/demo_training_race.gif" alt="Animated training race across all experiments">
+      <div class="caption">
+        Training race: validation planning ADE across 20 epochs for all experiment configurations.
+        The TracIn curriculum (green, bold) converges to the lowest ADE, while data selection
+        experiments (gray) and Loss SPL (magenta) show high variance. Each line represents one
+        seed of one experiment configuration.
+      </div>
+    </div>
+
+    <div class="video-container">
+      <img src="assets/demo_curriculum_evolution.gif" alt="Animated curriculum weight evolution">
+      <div class="caption">
+        Curriculum weight evolution: how sampling weights for each TracIn quartile change across
+        the three training phases. In Phase 1 (epochs 1&ndash;3), all quartiles receive equal
+        weight. Phase 2 (epochs 4&ndash;8) linearly ramps to differentiated weights. Phase 3
+        (epochs 9&ndash;20) applies full differentiation &mdash; top-quartile scenarios receive
+        2&times; the sampling probability of uniform, while bottom-quartile scenarios receive 0.25&times;.
+      </div>
+    </div>
+  </section>
+
+  <!-- Theoretical Analysis -->
+  <section>
+    <h2>Theoretical Analysis</h2>
+    <p>
+      We provide formal justification for why gradient-based curriculum weighting outperforms
+      alternatives:
+    </p>
+    <p>
+      <strong>Variance reduction via gradient alignment.</strong> TracIn-weighted sampling achieves
+      higher expected cosine similarity between mini-batch gradients and the validation gradient
+      than uniform sampling. By the rearrangement inequality, aligning sample weights with
+      gradient-similarity scores minimizes the variance of the weighted gradient estimator.
+    </p>
+    <p>
+      <strong>Signal dilution in hybrid scoring.</strong> When an informative scoring source
+      (TracIn) is rank-averaged with an orthogonal uninformative source (metadata), the resulting
+      hybrid attenuates the informative signal by a factor of &radic;2 in expectation. This
+      explains why the hybrid curriculum underperforms pure TracIn despite incorporating
+      strictly more information.
+    </p>
+    <p>
+      <strong>Curriculum weighting vs. hard selection.</strong> Hard selection on the top-<em>k</em>
+      scenarios introduces infinite KL divergence when the validation distribution has support
+      outside the selected subset. Soft weighting preserves full support while still concentrating
+      probability mass on high-value scenarios, avoiding the catastrophic failure mode observed
+      with 20% selection (ADE = 3.687 vs. 1.704).
+    </p>
+  </section>
+
+  <!-- Key Findings -->
+  <section>
+    <h2>Key Findings</h2>
+    <p>
+      <strong>1. Gradient-based > metadata-based curriculum</strong> &mdash; TracIn curriculum
+      significantly outperforms metadata curriculum (p=0.021, Cohen's d<sub>z</sub>=3.88),
+      consistent across all 3 seeds.
+    </p>
+    <p>
+      <strong>2. Orthogonality of scoring methods</strong> &mdash; TracIn and metadata scores
+      have Spearman &rho; = &minus;0.014, meaning gradient-based valuation captures entirely
+      different information than hand-crafted scenario features.
+    </p>
+    <p>
+      <strong>3. Weighting works, selection fails</strong> &mdash; Curriculum weighting with
+      TracIn scores yields the best results (ADE=1.704), while hard 20% selection using the
+      same scores degrades to ADE=3.687 (2&times; worse than baseline).
+    </p>
+    <p>
+      <strong>4. LiSSA influence functions fail at scale</strong> &mdash; Classical iHVP estimation
+      produces random noise for the 10M-parameter GameFormer. TracIn provides a practical,
+      deterministic alternative.
+    </p>
+  </section>
+
+  <!-- BibTeX -->
+  <section>
+    <h2>Citation</h2>
+    <div class="bibtex">@inproceedings{anonymous2027gradient,
+  title={Gradient-Based Data Valuation Improves Curriculum Learning
+         for Game-Theoretic Motion Planning},
+  author={Anonymous},
+  booktitle={IEEE International Conference on Robotics and
+             Automation (ICRA)},
+  year={2027}
+}</div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="container">
+    ICRA 2027 Submission &middot; Under Double-Blind Review
+  </div>
+</footer>
+
+</body>
+</html>
