@@ -1,0 +1,39 @@
+# TracIn-weighted curriculum on full data
+# Best-performing configuration from the paper (Table I)
+
+experiment:
+  name: tracin_curriculum_full
+  description: "GameFormer with TracIn gradient-similarity curriculum on full data"
+
+model:
+  encoder_layers: 3
+  decoder_levels: 2
+  num_neighbors: 10
+  modalities: 6
+
+training:
+  train_epochs: 20
+  batch_size: 8
+  learning_rate: 1.0e-4
+  gradient_accumulation_steps: 4
+  use_amp: true
+  grad_clip: 5.0
+  lr_milestones: [10, 12, 14, 16, 18]
+  lr_gamma: 0.5
+  seed: 3407
+  device: cuda
+
+data:
+  train_dir: "${DATA_DIR}/train"      # Path to preprocessed nuPlan train .npz files
+  valid_dir: "${DATA_DIR}/val"        # Path to preprocessed nuPlan val .npz files
+  score_file: "tracin_scores.csv"     # Output of compute_tracin.py
+  fraction: 1.0
+  selection_mode: top
+  num_workers: 8
+
+curriculum:
+  enabled: true
+  epoch_size: null                    # null = use full dataset each epoch
+
+paths:
+  log_dir: "./training_log"

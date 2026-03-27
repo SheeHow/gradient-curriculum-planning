@@ -1,0 +1,39 @@
+# Metadata-based curriculum on full data
+# Uses interaction-difficulty scores from score_scenarios.py
+
+experiment:
+  name: metadata_curriculum_full
+  description: "GameFormer with metadata interaction-difficulty curriculum"
+
+model:
+  encoder_layers: 3
+  decoder_levels: 2
+  num_neighbors: 10
+  modalities: 6
+
+training:
+  train_epochs: 20
+  batch_size: 8
+  learning_rate: 1.0e-4
+  gradient_accumulation_steps: 4
+  use_amp: true
+  grad_clip: 5.0
+  lr_milestones: [10, 12, 14, 16, 18]
+  lr_gamma: 0.5
+  seed: 3407
+  device: cuda
+
+data:
+  train_dir: "${DATA_DIR}/train"
+  valid_dir: "${DATA_DIR}/val"
+  score_file: "scenario_scores.csv"   # Output of score_scenarios.py
+  fraction: 1.0
+  selection_mode: top
+  num_workers: 8
+
+curriculum:
+  enabled: true
+  epoch_size: null
+
+paths:
+  log_dir: "./training_log"
