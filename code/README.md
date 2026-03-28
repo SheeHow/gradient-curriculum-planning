@@ -6,6 +6,8 @@ Code for **"Gradient-Based Data Valuation Improves Curriculum Learning for Game-
 
 **Project Page:** [https://sheehow.github.io/gradient-curriculum-planning/](https://sheehow.github.io/gradient-curriculum-planning/)
 
+![Method Overview](../assets/fig_overview.png)
+
 ## Overview
 
 This repository provides the scoring, curriculum, and visualization code for reproducing the data-centric curriculum learning pipeline described in the paper. The pipeline has three stages:
