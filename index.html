@@ -375,6 +375,84 @@
     </div>
   </section>
 
+  <!-- Prediction Quality Comparison -->
+  <section>
+    <div class="deep-dive-header">
+      <h2>Prediction Quality: Baseline vs. Curriculum</h2>
+      <span class="deep-dive-badge">Website Exclusive</span>
+    </div>
+    <p>
+      The core claim of this work is <strong>sample efficiency</strong>: given the same
+      5,148 training scenarios and 20 training epochs, gradient-based curriculum learning
+      produces a model with better trajectory predictions. The animations below make this
+      visible &mdash; each shows the <span style="color:#2ca02c;font-weight:600;">ground-truth
+      trajectory</span> (solid green) vs. the
+      <span style="color:#d62728;font-weight:600;">model prediction</span> (dashed red)
+      for the same validation scenario under both models.
+    </p>
+
+    <div class="highlight">
+      <strong>Same data, same epochs, better predictions.</strong>
+      Across the top validation scenarios, the TracIn-curriculum model reduces ADE by
+      an average of <strong>3.28&thinsp;m</strong> compared to the uniform-sampling baseline.
+      The curriculum does not change the planner &mdash; it changes how efficiently the
+      model learns from the available data.
+    </div>
+
+    <div class="video-container">
+      <img src="assets/demo_pred_gallery.gif" alt="Prediction quality gallery">
+      <div class="caption">
+        Three validation scenarios, each showing Baseline (left, red tint) vs.
+        TracIn-Curriculum (right, green tint). Green line = ground truth, red dashed = model
+        prediction. The curriculum-trained model tracks ground truth more closely, especially
+        in complex multi-agent interactions. ADE values shown in each panel title.
+      </div>
+    </div>
+
+    <h3 style="margin-top:32px; color:var(--primary); font-family:'Helvetica Neue',Arial,sans-serif;">
+      Detailed Comparison: Individual Scenarios
+    </h3>
+
+    <p>
+      <strong>Scenario 1</strong> &mdash; Dense Las Vegas intersection (10 nearby agents).
+      Baseline ADE: 12.62&thinsp;m, Curriculum ADE: 7.07&thinsp;m
+      (<strong>&minus;5.55&thinsp;m</strong>).
+    </p>
+    <div class="video-container">
+      <img src="assets/demo_pred_comparison_1.gif" alt="Prediction comparison scenario 1">
+      <div class="caption">
+        The baseline model diverges significantly from the ground truth in a complex
+        intersection. The curriculum model stays much closer to the actual trajectory.
+      </div>
+    </div>
+
+    <p>
+      <strong>Scenario 2</strong> &mdash; Las Vegas multi-lane negotiation.
+      Baseline ADE: 5.35&thinsp;m, Curriculum ADE: 1.79&thinsp;m
+      (<strong>&minus;3.57&thinsp;m</strong>).
+    </p>
+    <div class="video-container">
+      <img src="assets/demo_pred_comparison_2.gif" alt="Prediction comparison scenario 2">
+      <div class="caption">
+        The curriculum model learns to anticipate the lane-change dynamics that the
+        baseline model misses, resulting in a 67% ADE reduction.
+      </div>
+    </div>
+
+    <p>
+      <strong>Scenario 3</strong> &mdash; Boston urban driving with pedestrian-dense area.
+      Baseline ADE: 3.41&thinsp;m, Curriculum ADE: 0.59&thinsp;m
+      (<strong>&minus;2.82&thinsp;m</strong>).
+    </p>
+    <div class="video-container">
+      <img src="assets/demo_pred_comparison_3.gif" alt="Prediction comparison scenario 3">
+      <div class="caption">
+        In a tight urban setting, the curriculum model achieves near-perfect trajectory
+        prediction (ADE &lt; 0.6&thinsp;m), while the baseline deviates by over 3&thinsp;m.
+      </div>
+    </div>
+  </section>
+
   <!-- Dataset Explorer (website-exclusive) -->
   <section>
     <div class="deep-dive-header">
