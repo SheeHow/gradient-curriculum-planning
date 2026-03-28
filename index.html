@@ -295,6 +295,84 @@
         TracIn &times; Metadata quadrant with observation &rarr; future rollout.
       </div>
     </div>
+
+    <h3 style="margin-top:32px; color:var(--primary); font-family:'Helvetica Neue',Arial,sans-serif;">
+      TracIn Score Gradient: From Most to Least Valuable
+    </h3>
+    <p>
+      How do driving scenarios change across the TracIn score spectrum?
+      The grid below animates six scenarios sampled from percentile tiers (top-5%, top-25%,
+      median, bottom-25%, bottom-5%), each with a color-coded border from
+      <span style="color:#1a9850;font-weight:600;">green</span> (highest value) to
+      <span style="color:#d73027;font-weight:600;">red</span> (lowest value).
+      High-TracIn scenarios tend to feature complex negotiation dynamics, while
+      low-TracIn scenarios are often redundant straight-line driving.
+    </p>
+
+    <div class="video-container">
+      <img src="assets/demo_tracin_gradient.gif" alt="TracIn score gradient strip">
+      <div class="caption">
+        TracIn score gradient: animated trajectory rollouts from six percentile tiers.
+        Green border = high gradient value; red = low gradient value. Observe how scenario
+        complexity and interaction density decrease along the TracIn spectrum.
+      </div>
+    </div>
+
+    <h3 style="margin-top:32px; color:var(--primary); font-family:'Helvetica Neue',Arial,sans-serif;">
+      Interaction Diversity Gallery
+    </h3>
+    <p>
+      The nuPlan dataset contains a wide range of interaction types. Below we show six
+      representative scenarios, each selected to highlight a different interaction
+      characteristic from the metadata scoring features:
+    </p>
+
+    <div class="video-container">
+      <img src="assets/demo_interaction_gallery.gif" alt="Interaction diversity gallery">
+      <div class="caption">
+        Six interaction types from the nuPlan training set. <strong>Near-Miss:</strong>
+        minimum inter-agent distance &asymp; 0&thinsp;m. <strong>Multi-Conflict:</strong>
+        many agents with conflicting trajectories. <strong>High Heading Difference:</strong>
+        crossing or opposing traffic. <strong>Dense Traffic:</strong> 20 active agents.
+        <strong>Prolonged Proximity:</strong> extended close-following.
+        <strong>Benign:</strong> low-interaction baseline for contrast.
+      </div>
+    </div>
+
+    <h3 style="margin-top:32px; color:var(--primary); font-family:'Helvetica Neue',Arial,sans-serif;">
+      Individual Scenario Rollouts by TracIn Tier
+    </h3>
+    <p>
+      Detailed single-scenario animations for each TracIn tier, showing full observation
+      and future phases at higher temporal resolution:
+    </p>
+
+    <div class="figure-row" style="flex-wrap:wrap;">
+      <div class="video-container" style="flex:1; min-width:280px;">
+        <img src="assets/demo_tier_top5.gif" alt="Top 5% TracIn scenario">
+        <div class="caption">Top 5% &mdash; Gradient-critical scenario</div>
+      </div>
+      <div class="video-container" style="flex:1; min-width:280px;">
+        <img src="assets/demo_tier_top25.gif" alt="Top 25% TracIn scenario">
+        <div class="caption">Top 25% &mdash; High-value scenario</div>
+      </div>
+    </div>
+    <div class="figure-row" style="flex-wrap:wrap;">
+      <div class="video-container" style="flex:1; min-width:280px;">
+        <img src="assets/demo_tier_median.gif" alt="Median TracIn scenario">
+        <div class="caption">Median &mdash; Typical scenario</div>
+      </div>
+      <div class="video-container" style="flex:1; min-width:280px;">
+        <img src="assets/demo_tier_bot25.gif" alt="Bottom 25% TracIn scenario">
+        <div class="caption">Bottom 25% &mdash; Low-value scenario</div>
+      </div>
+    </div>
+    <div class="figure-row" style="flex-wrap:wrap; justify-content:center;">
+      <div class="video-container" style="flex:0 1 48%; min-width:280px;">
+        <img src="assets/demo_tier_bot5.gif" alt="Bottom 5% TracIn scenario">
+        <div class="caption">Bottom 5% &mdash; Counter-productive scenario</div>
+      </div>
+    </div>
   </section>
 
   <!-- Dataset Explorer (website-exclusive) -->
