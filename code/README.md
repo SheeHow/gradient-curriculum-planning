@@ -30,7 +30,8 @@ code/
     metadata_curriculum.yaml # Metadata curriculum config
     baseline.yaml            # Uniform sampling baseline
   figures/
-    generate_ade_comparison.py  # Reproduce Figure 6 (multi-seed ADE comparison)
+    generate_ade_comparison.py        # Reproduce Figure 6 (multi-seed ADE comparison)
+    generate_prediction_comparison.py # Prediction quality: baseline vs curriculum GIFs
 ```
 
 ## Requirements
@@ -91,7 +92,16 @@ The three curriculum phases:
 ### Step 3: Reproduce figures
 
 ```bash
+# Multi-seed ADE comparison (Figure 6)
 python figures/generate_ade_comparison.py
+
+# Prediction quality comparison GIFs (baseline vs curriculum)
+python figures/generate_prediction_comparison.py \
+    --val_dir /path/to/nuplan_processed/val \
+    --baseline_ckpt /path/to/E1_baseline_full/model_best.pth \
+    --curriculum_ckpt /path/to/E7_curriculum_full/model_best.pth \
+    --gameformer_dir /path/to/gameformer-planner \
+    --output_dir ./output
 ```
 
 ## Key Results
